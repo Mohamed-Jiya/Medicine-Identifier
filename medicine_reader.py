@@ -7,7 +7,7 @@ import re # new import - helps clean text
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Load the medicine image
-image = cv.imread('medicine.jpg')
+image = cv.imread('medi_amox.jpg')
 
 # Check if image was found
 if image is None:
