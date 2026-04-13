@@ -5,7 +5,8 @@ import re
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-image = cv.imread('medicine.jpg')
+# Load the medicine image
+image = cv.imread('medi_amox.jpg')
 
 if image is None:
     print("Image not found — check the filename!")
