@@ -1,7 +1,11 @@
 name,use,side_effect,dosage
 Paracetamol,Fever and pain,Nausea,1 tablet
-Aspirin,Pain relief,Stomach upset,1 tablet
 Crocin,Fever,Drowsiness,1 tablet
-Amoxicillin,Infection,Rash,1 capsule
+Aspirin,Pain relief,Stomach upset,1 tablet
 Cetirizine,Allergy,Sleepiness,1 tablet
-
+Amoxicillin,Bacterial infection,Rash,1 capsule
+Ibuprofen,Pain and inflammation,Acidity,1 tablet
+Metformin,Diabetes,Diarrhea,1 tablet
+Azithromycin,Infection,Nausea,1 tablet
+Dolo 650,Fever and body pain,Dizziness,1 tablet
+Pantoprazole,Acidity and stomach ulcer,Headache,1 tablet
