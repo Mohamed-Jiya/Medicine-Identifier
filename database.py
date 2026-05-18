@@ -39,12 +39,25 @@ def insert_from_csv():
     print("Data Inserted")
 
 
+
+
+# =========================================
+# SEARCH MEDICINE
+# =========================================
+
 def search_medicine(name):
+
     conn = sqlite3.connect("inventory.db")
+
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM medicines WHERE name=?", (name,))
+    cursor.execute(
+        "SELECT * FROM medicines WHERE LOWER(name) LIKE LOWER(?)",
+        ('%' + name + '%',)
+    )
+
     result = cursor.fetchone()
 
     conn.close()
+
     return result
