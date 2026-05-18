@@ -24,6 +24,8 @@ def insert_from_csv():
     conn = sqlite3.connect("inventory.db")
     cursor = conn.cursor()
 
+    cursor.execute("DELETE FROM medicines")
+
     data = pd.read_csv("medicine_database.csv")
 
     for index, row in data.iterrows():
