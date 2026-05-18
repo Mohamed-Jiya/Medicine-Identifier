@@ -1,3 +1,4 @@
+from medicine_reader import detect_medicine
 # =========================================
 # MEDICINE IDENTIFIER - SOFT GREEN UI
 # =========================================
@@ -268,7 +269,6 @@ button_frame = tk.Frame(
 
 button_frame.pack(fill="x", padx=25, pady=(0, 20))
 
-
 # =========================================
 # UPLOAD FUNCTION
 # =========================================
@@ -282,21 +282,68 @@ def upload_image():
 
     if file_path:
 
+        # OCR detect
+        medicine_name = detect_medicine(file_path)
+
         result_label.config(state="normal")
 
         result_label.delete(1.0, tk.END)
 
-        result_label.insert(
-            tk.END,
-            f"📷 Selected Image:\n\n{file_path}"
-        )
+        # If OCR found medicine
+        if medicine_name:
+
+            # Database search
+            data = search_medicine(medicine_name)
+
+            if data:
+
+                result_text = f"""
+✅ Medicine Found
+
+💊 Name:
+{data[1]}
+
+📌 Use:
+{data[2]}
+
+⚠ Side Effects:
+{data[3]}
+
+💉 Dosage:
+{data[4]}
+"""
+
+                result_label.insert(tk.END, result_text)
+
+                status_label.config(
+                    text="● Medicine Found",
+                    fg="#3B6D11"
+                )
+
+            else:
+
+                result_label.insert(
+                    tk.END,
+                    "⚠ Medicine detected but not uploaded in database yet."
+                )
+
+        else:
+
+            result_label.insert(
+                tk.END,
+                """
+⚠ Medicine Not Recognized
+
+Please upload a clearer image.
+"""
+            )
+
+            status_label.config(
+                text="● OCR Failed",
+                fg="red"
+            )
 
         result_label.config(state="disabled")
-
-        status_label.config(
-            text="● Image Uploaded",
-            fg="#3B6D11"
-        )
 
 
 # =========================================
