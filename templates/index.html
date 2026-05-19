@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Identifier</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* header */
+        header {
+            background-color: #1a6b3c;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        header p {
+            color: #a8d5b5;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        /* main container */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* card */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        /* two column layout */
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        /* search input */
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #1a6b3c;
+        }
+
+        /* buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-green {
+            background-color: #1a6b3c;
+            color: white;
+        }
+
+        .btn-green:hover {
+            background-color: #145530;
+        }
+
+        .btn-upload {
+            width: 100%;
+            background-color: #f0f4f8;
+            color: #1a6b3c;
+            border: 1.5px dashed #1a6b3c;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-upload:hover {
+            background-color: #e0ede6;
+        }
+
+        /* image preview */
+        .preview-box {
+            margin-top: 14px;
+            width: 100%;
+            height: 140px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 13px;
+            overflow: hidden;
+            background: #fafafa;
+        }
+
+        .preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* divider */
+        .divider {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+        }
+
+        /* result box */
+        .result-box {
+            background: #f8faf9;
+            border-radius: 10px;
+            padding: 20px;
+            height: 100%;
+            min-height: 280px;
+        }
+
+        .result-placeholder {
+            color: #bbb;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .result-found {
+            display: none;
+        }
+
+        .result-tag {
+            display: inline-block;
+            background: #e6f4ec;
+            color: #1a6b3c;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .result-row {
+            margin-bottom: 14px;
+        }
+
+        .result-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-value {
+            font-size: 15px;
+            color: #222;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .result-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a6b3c;
+        }
+
+        .error-box {
+            display: none;
+            background: #fff5f5;
+            border: 1px solid #ffcccc;
+            border-radius: 8px;
+            padding: 14px;
+            color: #cc0000;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* loading spinner */
+        .spinner {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* status bar */
+        .status-bar {
+            background: #e6f4ec;
+            padding: 8px 40px;
+            font-size: 12px;
+            color: #1a6b3c;
+            font-weight: 600;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- header -->
+    <header>
+        <div>
+            <h1>Medicine Identifier</h1>
+            <p>Search by name or upload an image to identify a medicine</p>
+        </div>
+    </header>
+
+    <!-- main content -->
+    <div class="container">
+        <div class="card">
+            <div class="layout">
+
+                <!-- left side - input -->
+                <div>
+                    <p class="section-title">Search by Name</p>
+                    <div class="search-box">
+                        <input type="text" id="medicine-input" placeholder="e.g. Paracetamol">
+                        <button class="btn btn-green" onclick="searchByName()">Search</button>
+                    </div>
+
+                    <hr class="divider">
+
+                    <p class="section-title">Upload Image</p>
+                    <input type="file" id="image-input" accept="image/*" style="display:none"
+                           onchange="previewImage(event)">
+                    <button class="btn-upload" onclick="document.getElementById('image-input').click()">
+                        Click to upload medicine image
+                    </button>
+
+                    <div class="preview-box" id="preview-box">
+                        <span id="preview-placeholder">No image selected</span>
+                        <img id="preview-img" style="display:none">
+                    </div>
+
+                    <br>
+                    <button class="btn btn-green" style="width:100%" onclick="searchByImage()">
+                        Identify from Image
+                    </button>
+                </div>
+
+                <!-- right side - results -->
+                <div>
+                    <p class="section-title">Result</p>
+                    <div class="result-box">
+
+                        <div class="spinner" id="spinner">Reading image...</div>
+
+                        <div id="result-placeholder" class="result-placeholder">
+                            Results will appear here after searching or uploading an image
+                        </div>
+
+                        <div class="result-found" id="result-found">
+                            <span class="result-tag">Medicine Found</span>
+
+                            <div class="result-row">
+                                <div class="result-label">Name</div>
+                                <div class="result-value result-name" id="r-name"></div>
+                            </div>
+                            <div class="result-row">
+                                <div class="result-label">Use</div>
+                                <div class="result-value" id="r-use"></div>
+                            </div>
+                            <div class="result-row">
+                                <div class="result-label">Side Effects</div>
+                                <div class="result-value" id="r-side"></div>
+                            </div>
+                            <div class="result-row">
+                                <div class="result-label">Dosage</div>
+                                <div class="result-value" id="r-dosage"></div>
+                            </div>
+                        </div>
+
+                        <div class="error-box" id="error-box"></div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- status bar -->
+    <div class="status-bar" id="status-bar">Ready</div>
+
+    <script>
+        // show image preview when file is selected
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('preview-img').style.display = 'block';
+                document.getElementById('preview-placeholder').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // show result on screen
+        function showResult(data) {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('result-placeholder').style.display = 'none';
+            document.getElementById('error-box').style.display = 'none';
+
+            if (data.error) {
+                document.getElementById('result-found').style.display = 'none';
+                document.getElementById('error-box').style.display = 'block';
+                document.getElementById('error-box').innerText = data.error;
+                document.getElementById('status-bar').innerText = 'Not found';
+                return;
+            }
+
+            document.getElementById('r-name').innerText   = data.name;
+            document.getElementById('r-use').innerText    = data.use;
+            document.getElementById('r-side').innerText   = data.side_effect;
+            document.getElementById('r-dosage').innerText = data.dosage;
+            document.getElementById('result-found').style.display = 'block';
+            document.getElementById('status-bar').innerText = 'Medicine Found: ' + data.name;
+        }
+
+        // search by typing name
+        function searchByName() {
+            const name = document.getElementById('medicine-input').value.trim();
+            if (!name) return;
+
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('result-found').style.display = 'none';
+            document.getElementById('result-placeholder').style.display = 'none';
+            document.getElementById('status-bar').innerText = 'Searching...';
+
+            fetch('/search', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name: name})
+            })
+            .then(res => res.json())
+            .then(data => showResult(data));
+        }
+
+        // search by uploading image
+        function searchByImage() {
+            const file = document.getElementById('image-input').files[0];
+            if (!file) {
+                alert('Please select an image first!');
+                return;
+            }
+
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('result-found').style.display = 'none';
+            document.getElementById('result-placeholder').style.display = 'none';
+            document.getElementById('status-bar').innerText = 'Reading image...';
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            fetch('/identify', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => showResult(data));
+        }
+    </script>
+
+</body>
+</html>
