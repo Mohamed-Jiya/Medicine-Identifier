@@ -32,6 +32,7 @@
 # if __name__ == '__main__':
 #     app.run(debug=True)
 
+
 from flask import Flask, render_template, request, jsonify
 from main import identify_medicine
 from database import search_medicine
@@ -43,33 +44,62 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-# image upload route
+
 @app.route('/identify', methods=['POST'])
 def identify():
-    if 'image' not in request.files:
-        return jsonify({"error": "No image uploaded!"})
-    image = request.files['image']
-    image_path = "temp_upload.jpg"
-    image.save(image_path)
-    result = identify_medicine(image_path)
-    os.remove(image_path)
-    return jsonify(result)
 
-# search by name route
+    try:
+
+        if 'image' not in request.files:
+            return jsonify({
+                "error": "No image uploaded!"
+            })
+
+        image = request.files['image']
+
+        image_path = "temp_upload.jpg"
+
+        image.save(image_path)
+
+        result = identify_medicine(image_path)
+
+        if os.path.exists(image_path):
+            os.remove(image_path)
+
+        return jsonify(result)
+
+    except Exception as e:
+
+        return jsonify({
+            "error": str(e)
+        })
+
+
 @app.route('/search', methods=['POST'])
 def search():
-    data = request.get_json()
-    name = data.get('name', '')
-    result = search_medicine(name)
-    if result:
+
+    try:
+
+        data = request.get_json()
+
+        name = data.get('name', '')
+
+        result = search_medicine(name)
+
+        if result:
+            return jsonify(result)
+
+        else:
+            return jsonify({
+                "error": f"{name} not found in database!"
+            })
+
+    except Exception as e:
+
         return jsonify({
-            "name":        result[1],
-            "use":         result[2],
-            "side_effect": result[3],
-            "dosage":      result[4]
+            "error": str(e)
         })
-    else:
-        return jsonify({"error": f"'{name}' not found in database!"})
+
 
 if __name__ == '__main__':
     app.run(debug=True)

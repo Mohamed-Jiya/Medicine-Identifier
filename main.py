@@ -124,28 +124,40 @@ from medicine_reader import detect_medicine
 from database import search_medicine
 
 
+# =========================================
+# IDENTIFY MEDICINE
+# =========================================
+
 def identify_medicine(image_path):
 
-    # detect medicine name from image
+    # OCR detect medicine name
     medicine_name = detect_medicine(image_path)
 
     if medicine_name is None:
-        return {"error": "Medicine not recognized — try a clearer photo!"}
 
-    # search database for full details
+        return {
+            "error": "Medicine not recognized — try a clearer photo!"
+        }
+
+    # Search medicine in database
     result = search_medicine(medicine_name)
 
     if result is None:
-        return {"error": f"{medicine_name} not found in database!"}
 
-    return {
-        "name":         result[1],
-        "use":          result[2],
-        "side_effect":  result[3],
-        "dosage":       result[4]
-    }
+        return {
+            "error": f"{medicine_name} not found in database!"
+        }
 
+    # Return medicine details
+    return result
+
+
+# =========================================
+# TEST
+# =========================================
 
 if __name__ == "__main__":
+
     result = identify_medicine("medi_amox.jpg")
+
     print(result)

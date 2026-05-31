@@ -1,11 +1,11 @@
-name,use,side_effect,dosage
-Paracetamol,Fever and pain,Nausea,1 tablet
-Crocin,Fever,Drowsiness,1 tablet
-Aspirin,Pain relief,Stomach upset,1 tablet
-Cetirizine,Allergy,Sleepiness,1 tablet
-Amoxicillin,Bacterial infection,Rash,1 capsule
-Ibuprofen,Pain and inflammation,Acidity,1 tablet
-Metformin,Diabetes,Diarrhea,1 tablet
-Azithromycin,Infection,Nausea,1 tablet
-Dolo 650,Fever and body pain,Dizziness,1 tablet
-Pantoprazole,Acidity and stomach ulcer,Headache,1 tablet
+name,strength,use,side_effect,dosage,expiry
+Paracetamol,500mg,Fever and pain,Nausea,1 tablet,12/2027
+Crocin,500mg,Fever,Drowsiness,1 tablet,08/2026
+Aspirin,75mg,Pain relief,Stomach upset,1 tablet,06/2027
+Cetirizine,10mg,Allergy,Sleepiness,1 tablet,03/2027
+Amoxicillin,250mg,Bacterial infection,Rash,1 capsule,11/2027
+Ibuprofen,400mg,Pain and inflammation,Acidity,1 tablet,09/2026
+Metformin,500mg,Diabetes,Diarrhea,1 tablet,01/2028
+Azithromycin,500mg,Infection,Nausea,1 tablet,05/2027
+Dolo 650,650mg,Fever and body pain,Dizziness,1 tablet,12/2027
+Pantoprazole,40mg,Acidity and stomach ulcer,Headache,1 tablet,07/2027
